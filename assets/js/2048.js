@@ -1,17 +1,10 @@
 var numbers=[];
+var score=0;
 var ROW_COUNT = 4;
 var COLUMN_COUNT = 4;
 
 $(function() { 
   initNumbers(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
-  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   paintTiles(numbers,ROW_COUNT,COLUMN_COUNT);
@@ -34,7 +27,12 @@ function swipeGesture(pSwapArea) {
   $(pSwapArea).swipe( {
     //Generic swipe handler for all directions
     swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-      moveTiles(direction,numbers,ROW_COUNT,COLUMN_COUNT);
+      if (direction!=null) {
+        moveTiles(direction,numbers,ROW_COUNT,COLUMN_COUNT);
+        addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+        paintTiles(numbers,ROW_COUNT,COLUMN_COUNT);
+        $('#scoreNumber').html(score);
+      }
     },
     //Default is 75px, set to 0 for demo so any distance triggers swipe
     threshold:0
@@ -79,7 +77,11 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
           for (var existingCol=col+1; existingCol<=pColumnCount-1; existingCol++) {
             if (pNumbers[row][col]==pNumbers[row][existingCol]) {
               pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+              score+=pNumbers[row][existingCol];
               pNumbers[row][col]=null;
+              existingCol=pColumnCount;
+            }
+            else if(pNumbers[row][existingCol]!=null) {
               existingCol=pColumnCount;
             }
           };
@@ -112,7 +114,11 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
           for (var existingCol=col-1; existingCol>=0; existingCol--) {
             if (pNumbers[row][col]==pNumbers[row][existingCol]) {
               pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+              score+=pNumbers[row][existingCol];
               pNumbers[row][col]=null;
+              existingCol=-1;
+            }
+            else if(pNumbers[row][existingCol]!=null) {
               existingCol=-1;
             }
           };
@@ -148,7 +154,11 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
           for (var existingRow=row-1; existingRow>=0; existingRow--) {
             if (pNumbers[row][col]==pNumbers[existingRow][col]) {
               pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
+              score+=pNumbers[existingRow][col];
               pNumbers[row][col]=null;
+              existingRow=-1;
+            }
+            else if(pNumbers[existingRow][col]!=null) {
               existingRow=-1;
             }
           };
@@ -184,7 +194,11 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
           for (var existingRow=row+1; existingRow<=pRowCount-1; existingRow++) {
             if (pNumbers[row][col]==pNumbers[existingRow][col]) {
               pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
+              score+=pNumbers[existingRow][col];
               pNumbers[row][col]=null;
+              existingRow=pRowCount;
+            }
+            else if(pNumbers[existingRow][col]!=null) {
               existingRow=pRowCount;
             }
           };
@@ -210,5 +224,4 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
       };
     };
   }
-  paintTiles(pNumbers,pRowCount,pColumnCount);
 }
