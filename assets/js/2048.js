@@ -137,5 +137,41 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
       };
     };
   }
+  else if (pDirection=='up') {
+    // check the rows to be pulled up
+    for (var row=1; row<=pRowCount-1; row++) {
+      // for every column
+      for (var col=0; col<=pColumnCount-1; col++) {
+        // if the cell is not null
+        if (pNumbers[row][col]!=null) {
+          // check cells from the up after, to top
+          for (var existingRow=row-1; existingRow>=0; existingRow--) {
+            if (pNumbers[row][col]==pNumbers[existingRow][col]) {
+              pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
+              pNumbers[row][col]=null;
+              existingRow=-1;
+            }
+          };
+        }
+      };
+    };
+    // check the rows to be pulled up
+    for (var row=1; row<=pRowCount-1; row++) {
+      // for every column
+      for (var col=0; col<=pColumnCount-1; col++) {
+        // if the cell is not null
+        if (pNumbers[row][col]!=null) {
+          // check cells from the top
+          for (var pulledRow=0; pulledRow<=row-1; pulledRow++) {
+            if (pNumbers[pulledRow][col]==null) {
+              pNumbers[pulledRow][col]=pNumbers[row][col];
+              pNumbers[row][col]=null;
+              pulledRow=row;
+            }
+          };
+        }
+      };
+    };
+  }
   paintTiles(pNumbers,pRowCount,pColumnCount);
 }
