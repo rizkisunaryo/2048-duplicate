@@ -69,22 +69,36 @@ function paintTiles(pNumbers,pRowCount,pColumnCount) {
 
 function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
   if (pDirection=='right') {
+    // check the columns to be pulled right
+    for (var col=pColumnCount-2; col>=0; col--) {
+      // for every row
+      for (var row=0; row<=pRowCount-1; row++) {
+        // if the cell is not null
+        if (pNumbers[row][col]!=null) {
+          // check cells from the left to rightest
+          for (var existingCol=col+1; existingCol<=pColumnCount-1; existingCol++) {
+            if (pNumbers[row][col]==pNumbers[row][existingCol]) {
+              pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+              pNumbers[row][col]=null;
+              existingCol=pColumnCount;
+            }
+          };
+        }
+      };
+    };
     for (var col=pColumnCount-2; col>=0; col--) {
       for (var row=0; row<=pRowCount-1; row++) {
         if (pNumbers[row][col]!=null) {
+          // check cells from the rightest
           for (var pulledCol=pColumnCount-1; pulledCol>col; pulledCol--) {
             if (pNumbers[row][pulledCol]==null) {
               pNumbers[row][pulledCol]=pNumbers[row][col];
-              pNumbers[row][col]=null;
-            }
-            else if (pNumbers[row][pulledCol]==pNumbers[row][col]) {
-              pNumbers[row][pulledCol]=pNumbers[row][pulledCol]+pNumbers[row][col];
               pNumbers[row][col]=null;
             }
           };
         }
       };
     };
-    paintTiles(pNumbers,pRowCount,pColumnCount);
   }
+  paintTiles(pNumbers,pRowCount,pColumnCount);
 }
