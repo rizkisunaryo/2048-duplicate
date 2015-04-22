@@ -4,13 +4,18 @@ var ROW_COUNT = 4;
 var COLUMN_COUNT = 4;
 
 $(function() { 
+  init();
+  swipeGesture('#bodyContainer');
+});
+
+function init() {
+  score=0;
+  $('#scoreNumber').html(score);
   initNumbers(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   paintTiles(numbers,ROW_COUNT,COLUMN_COUNT);
-
-  swipeGesture('#bodyContainer');
-});
+}
 
 function initNumbers(pNumbers,pRowCount,pColumnCount) {
   for (var row=0; row<=pRowCount-1; row++) {
@@ -27,16 +32,39 @@ function swipeGesture(pSwapArea) {
   $(pSwapArea).swipe( {
     //Generic swipe handler for all directions
     swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-      if (direction!=null) {
+      var vGameOver = isGameOver(numbers,ROW_COUNT,COLUMN_COUNT);
+      if (direction!=null && vGameOver==0) {
         moveTiles(direction,numbers,ROW_COUNT,COLUMN_COUNT);
         addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
         paintTiles(numbers,ROW_COUNT,COLUMN_COUNT);
         $('#scoreNumber').html(score);
       }
+      else if (vGameOver==1) {
+        if (confirm("Score: "+score+"\nPlay again?") == true) {
+            init();
+        } 
+      };
     },
     //Default is 75px, set to 0 for demo so any distance triggers swipe
     threshold:0
   });
+}
+
+function isGameOver(pNumbers,pRowCount,pColumnCount) {
+  var isGameOver=1;
+
+  for (var row=0; row<=pRowCount-1; row++) {
+    for (var col=0; col<=pColumnCount-1; col++) {
+      if (pNumbers[row][col]==null) {
+        console.log(1);
+        isGameOver=0;
+        col=pColumnCount;
+        row=pRowCount;
+      };
+    }
+  };
+
+  return isGameOver;
 }
 
 function addRandomTile(pNumbers,pRowCount,pColumnCount) {
@@ -213,7 +241,6 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
         if (pNumbers[row][col]!=null) {
           // check cells from the bottom
           for (var pulledRow=pRowCount-1; pulledRow>=row+1; pulledRow--) {
-            console.log(pulledRow+":"+row);
             if (pNumbers[pulledRow][col]==null) {
               pNumbers[pulledRow][col]=pNumbers[row][col];
               pNumbers[row][col]=null;
