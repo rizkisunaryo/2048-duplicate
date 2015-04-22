@@ -6,6 +6,14 @@ $(function() {
   initNumbers(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
+  addRandomTile(numbers,ROW_COUNT,COLUMN_COUNT);
   paintTiles(numbers,ROW_COUNT,COLUMN_COUNT);
 
   swipeGesture('#bodyContainer');
@@ -68,7 +76,11 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
             if (pNumbers[row][pulledCol]==null) {
               pNumbers[row][pulledCol]=pNumbers[row][col];
               pNumbers[row][col]=null;
-            };
+            }
+            else if (pNumbers[row][pulledCol]==pNumbers[row][col]) {
+              pNumbers[row][pulledCol]=pNumbers[row][pulledCol]+pNumbers[row][col];
+              pNumbers[row][col]=null;
+            }
           };
         }
       };
