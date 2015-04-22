@@ -94,6 +94,43 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
             if (pNumbers[row][pulledCol]==null) {
               pNumbers[row][pulledCol]=pNumbers[row][col];
               pNumbers[row][col]=null;
+              pulledCol=col;
+            }
+          };
+        }
+      };
+    };
+  }
+  else if (pDirection=='left') {
+    // check the columns to be pulled left
+    for (var col=1; col<=pColumnCount-1; col++) {
+      // for every row
+      for (var row=0; row<=pRowCount-1; row++) {
+        // if the cell is not null
+        if (pNumbers[row][col]!=null) {
+          // check cells from the right to leftest
+          for (var existingCol=col-1; existingCol>=0; existingCol--) {
+            if (pNumbers[row][col]==pNumbers[row][existingCol]) {
+              pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+              pNumbers[row][col]=null;
+              existingCol=-1;
+            }
+          };
+        }
+      };
+    };
+    // check the columns to be pulled left
+    for (var col=1; col<=pColumnCount-1; col++) {
+      // for every row
+      for (var row=0; row<=pRowCount-1; row++) {
+        // if the cell is not null
+        if (pNumbers[row][col]!=null) {
+          // check cells from the leftest
+          for (var pulledCol=0; pulledCol<=col-1; pulledCol++) {
+            if (pNumbers[row][pulledCol]==null) {
+              pNumbers[row][pulledCol]=pNumbers[row][col];
+              pNumbers[row][col]=null;
+              pulledCol=col;
             }
           };
         }
