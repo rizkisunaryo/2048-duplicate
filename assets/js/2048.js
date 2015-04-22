@@ -3,7 +3,25 @@ var score=0;
 var ROW_COUNT = 4;
 var COLUMN_COUNT = 4;
 
+var blockSize=50;
+var fontSize=14;
+
 $(function() { 
+  var heightMod = Math.floor($(window).height() / (ROW_COUNT+1));
+  var widthMod = Math.floor($(window).width() / COLUMN_COUNT);
+  if (heightMod<widthMod) blockSize=heightMod;
+  else blockSize=widthMod;
+  fontSize = Math.floor(blockSize/2.5);
+  console.log(blockSize+":"+heightMod+":"+widthMod);
+  $('#tableContainer').css('width',(blockSize*COLUMN_COUNT)+'px');
+  $('td').css('width',blockSize+'px');
+  $('td').css('height',blockSize+'px');
+  $('.tile').css('width',blockSize+'px');
+  $('.tile').css('height',blockSize+'px');
+  $('.tile').css('font-size',fontSize+'px');
+  $('#score').css('font-size',fontSize+'px');
+  $('#scoreNumber').css('font-size',fontSize+'px');
+
   init();
   swipeGesture('#bodyContainer');
 });
@@ -56,7 +74,6 @@ function isGameOver(pNumbers,pRowCount,pColumnCount) {
   for (var row=0; row<=pRowCount-1; row++) {
     for (var col=0; col<=pColumnCount-1; col++) {
       if (pNumbers[row][col]==null) {
-        console.log(1);
         isGameOver=0;
         col=pColumnCount;
         row=pRowCount;
@@ -83,7 +100,7 @@ function paintTiles(pNumbers,pRowCount,pColumnCount) {
     for (var i2=0; i2<=pColumnCount-1; i2++) {
       var selector = '#cell'+i1+''+i2;
       if (pNumbers[i1][i2]!=null) {
-        var html='<div class="tile"><div>'+pNumbers[i1][i2]+'</div></div>';
+        var html='<div class="tile" style="width:'+(blockSize-1)+'px; height:'+(blockSize-1)+'px; font-size:'+fontSize+'px; background-color:#000"><div>'+pNumbers[i1][i2]+'</div></div>';
         $(selector).html(html);
       }
       else {
