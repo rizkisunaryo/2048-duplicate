@@ -112,25 +112,47 @@ function paintTiles(pNumbers,pRowCount,pColumnCount) {
 
 function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
   if (pDirection=='right') {
-    // check the columns to be pulled right
-    for (var col=pColumnCount-2; col>=0; col--) {
-      // for every row
-      for (var row=0; row<=pRowCount-1; row++) {
+    
+    // // check the columns to be pulled right
+    // for (var col=pColumnCount-2; col>=0; col--) {
+    //   // for every row
+    //   for (var row=0; row<=pRowCount-1; row++) {
+    //     // if the cell is not null
+    //     if (pNumbers[row][col]!=null) {
+    //       // check cells from the left to rightest
+    //       for (var existingCol=col+1; existingCol<=pColumnCount-1; existingCol++) {
+    //         if (pNumbers[row][col]==pNumbers[row][existingCol]) {
+    //           pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+    //           score+=pNumbers[row][existingCol];
+    //           pNumbers[row][col]=null;
+    //           existingCol=pColumnCount;
+    //         }
+    //         else if(pNumbers[row][existingCol]!=null) {
+    //           existingCol=pColumnCount;
+    //         }
+    //       };
+    //     }
+    //   };
+    // };
+
+    // check every row
+    for (var row=0; row<=pRowCount-1; row++) {
+      // check from rightest, to 1 column before leftest
+      for (var col=pColumnCount-1; col>=1; col--) {
         // if the cell is not null
         if (pNumbers[row][col]!=null) {
-          // check cells from the left to rightest
-          for (var existingCol=col+1; existingCol<=pColumnCount-1; existingCol++) {
-            if (pNumbers[row][col]==pNumbers[row][existingCol]) {
-              pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
-              score+=pNumbers[row][existingCol];
-              pNumbers[row][col]=null;
-              existingCol=pColumnCount;
-            }
-            else if(pNumbers[row][existingCol]!=null) {
-              existingCol=pColumnCount;
-            }
+          // check cells from left after, to leftest
+          // to find same number
+          for (var sameCol=col-1; sameCol>=0; sameCol--) {
+            if (pNumbers[row][col]==pNumbers[row][sameCol]) {
+              pNumbers[row][col]=pNumbers[row][col]+pNumbers[row][sameCol];
+              score+=pNumbers[row][col];
+              pNumbers[row][sameCol]=null;
+              col=sameCol;
+              sameCol=-1;
+            };
           };
-        }
+        };
       };
     };
     for (var col=pColumnCount-2; col>=0; col--) {
@@ -149,25 +171,46 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
     };
   }
   else if (pDirection=='left') {
-    // check the columns to be pulled left
-    for (var col=1; col<=pColumnCount-1; col++) {
-      // for every row
-      for (var row=0; row<=pRowCount-1; row++) {
+    // // check the columns to be pulled left
+    // for (var col=1; col<=pColumnCount-1; col++) {
+    //   // for every row
+    //   for (var row=0; row<=pRowCount-1; row++) {
+    //     // if the cell is not null
+    //     if (pNumbers[row][col]!=null) {
+    //       // check cells from the right to leftest
+    //       for (var existingCol=col-1; existingCol>=0; existingCol--) {
+    //         if (pNumbers[row][col]==pNumbers[row][existingCol]) {
+    //           pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
+    //           score+=pNumbers[row][existingCol];
+    //           pNumbers[row][col]=null;
+    //           existingCol=-1;
+    //         }
+    //         else if(pNumbers[row][existingCol]!=null) {
+    //           existingCol=-1;
+    //         }
+    //       };
+    //     }
+    //   };
+    // };
+
+    // check every row
+    for (var row=0; row<=pRowCount-1; row++) {
+      // check from leftest, to 1 column before rightest
+      for (var col=0; col<=pColumnCount-2; col++) {
         // if the cell is not null
         if (pNumbers[row][col]!=null) {
-          // check cells from the right to leftest
-          for (var existingCol=col-1; existingCol>=0; existingCol--) {
-            if (pNumbers[row][col]==pNumbers[row][existingCol]) {
-              pNumbers[row][existingCol]=pNumbers[row][existingCol]+pNumbers[row][col];
-              score+=pNumbers[row][existingCol];
-              pNumbers[row][col]=null;
-              existingCol=-1;
-            }
-            else if(pNumbers[row][existingCol]!=null) {
-              existingCol=-1;
-            }
+          // check cells from right after, to rightest
+          // to find same number
+          for (var sameCol=col+1; sameCol<=pColumnCount-1; sameCol++) {
+            if (pNumbers[row][col]==pNumbers[row][sameCol]) {
+              pNumbers[row][col]=pNumbers[row][col]+pNumbers[row][sameCol];
+              score+=pNumbers[row][col];
+              pNumbers[row][sameCol]=null;
+              col=sameCol;
+              sameCol=pColumnCount;
+            };
           };
-        }
+        };
       };
     };
     // check the columns to be pulled left
@@ -189,25 +232,46 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
     };
   }
   else if (pDirection=='up') {
-    // check the rows to be pulled up
-    for (var row=1; row<=pRowCount-1; row++) {
-      // for every column
-      for (var col=0; col<=pColumnCount-1; col++) {
+    // // check the rows to be pulled up
+    // for (var row=1; row<=pRowCount-1; row++) {
+    //   // for every column
+    //   for (var col=0; col<=pColumnCount-1; col++) {
+    //     // if the cell is not null
+    //     if (pNumbers[row][col]!=null) {
+    //       // check cells from the up after, to top
+    //       for (var existingRow=row-1; existingRow>=0; existingRow--) {
+    //         if (pNumbers[row][col]==pNumbers[existingRow][col]) {
+    //           pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
+    //           score+=pNumbers[existingRow][col];
+    //           pNumbers[row][col]=null;
+    //           existingRow=-1;
+    //         }
+    //         else if(pNumbers[existingRow][col]!=null) {
+    //           existingRow=-1;
+    //         }
+    //       };
+    //     }
+    //   };
+    // };
+
+    // check every column
+    for (var col=0; col<=pColumnCount-1; col++) {
+      // check from top, to 1 row before bottom
+      for (var row=0; row<=pRowCount-2; row++) {
         // if the cell is not null
         if (pNumbers[row][col]!=null) {
-          // check cells from the up after, to top
-          for (var existingRow=row-1; existingRow>=0; existingRow--) {
-            if (pNumbers[row][col]==pNumbers[existingRow][col]) {
-              pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
-              score+=pNumbers[existingRow][col];
-              pNumbers[row][col]=null;
-              existingRow=-1;
-            }
-            else if(pNumbers[existingRow][col]!=null) {
-              existingRow=-1;
-            }
+          // check cells from down after, to bottom
+          // to find same number
+          for (var sameRow=row+1; sameRow<=pRowCount-1; sameRow++) {
+            if (pNumbers[row][col]==pNumbers[sameRow][col]) {
+              pNumbers[row][col]=pNumbers[row][col]+pNumbers[sameRow][col];
+              score+=pNumbers[row][col];
+              pNumbers[sameRow][col]=null;
+              row=sameRow;
+              sameRow=pRowCount;
+            };
           };
-        }
+        };
       };
     };
     // check the rows to be pulled up
@@ -229,25 +293,46 @@ function moveTiles(pDirection,pNumbers,pRowCount,pColumnCount) {
     };
   }
   else if (pDirection=='down') {
-    // check the rows to be pulled down
-    for (var row=pRowCount-2; row>=0; row--) {
-      // for every column
-      for (var col=0; col<=pColumnCount-1; col++) {
+    // // check the rows to be pulled down
+    // for (var row=pRowCount-2; row>=0; row--) {
+    //   // for every column
+    //   for (var col=0; col<=pColumnCount-1; col++) {
+    //     // if the cell is not null
+    //     if (pNumbers[row][col]!=null) {
+    //       // check cells from the down after, to bottom
+    //       for (var existingRow=row+1; existingRow<=pRowCount-1; existingRow++) {
+    //         if (pNumbers[row][col]==pNumbers[existingRow][col]) {
+    //           pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
+    //           score+=pNumbers[existingRow][col];
+    //           pNumbers[row][col]=null;
+    //           existingRow=pRowCount;
+    //         }
+    //         else if(pNumbers[existingRow][col]!=null) {
+    //           existingRow=pRowCount;
+    //         }
+    //       };
+    //     }
+    //   };
+    // };
+
+    // check every column
+    for (var col=0; col<=pColumnCount-1; col++) {
+      // check from bottom, to 1 row before top
+      for (var row=pRowCount-1; row>=1; row--) {
         // if the cell is not null
         if (pNumbers[row][col]!=null) {
-          // check cells from the down after, to bottom
-          for (var existingRow=row+1; existingRow<=pRowCount-1; existingRow++) {
-            if (pNumbers[row][col]==pNumbers[existingRow][col]) {
-              pNumbers[existingRow][col]=pNumbers[existingRow][col]+pNumbers[row][col];
-              score+=pNumbers[existingRow][col];
-              pNumbers[row][col]=null;
-              existingRow=pRowCount;
-            }
-            else if(pNumbers[existingRow][col]!=null) {
-              existingRow=pRowCount;
-            }
+          // check cells from up after, to top
+          // to find same number
+          for (var sameRow=row-1; sameRow>=0; sameRow--) {
+            if (pNumbers[row][col]==pNumbers[sameRow][col]) {
+              pNumbers[row][col]=pNumbers[row][col]+pNumbers[sameRow][col];
+              score+=pNumbers[row][col];
+              pNumbers[sameRow][col]=null;
+              row=sameRow;
+              sameRow=-1;
+            };
           };
-        }
+        };
       };
     };
     // check the rows to be pulled down
